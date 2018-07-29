@@ -4,8 +4,9 @@ import './App.css';
 
 class App extends Component {
   constructor() {
+    super();
     this.state = {
-      projects = [
+      projects: [
         {
           title: "Business Website",
           category: "Web Design"
@@ -25,7 +26,7 @@ class App extends Component {
     return (
       <div className="App">
         My App
-        <Projects />
+        <Projects projects = { this.state.projects } />
       </div>
     );
   }
