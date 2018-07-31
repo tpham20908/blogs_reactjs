@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
-const Home = () => <div>Home</div>;
-const About = () => <div>About</div>;
+const Home = () => <h2>Home</h2>;
+const About = () => <h3>About</h3>;
 const Users = ({ match }) => <div>{match.url}</div>;
 
 const App = () => (
