@@ -14,14 +14,31 @@
     <div id="container"></div>
 
     <script type="text/babel">
-        
+        var Comment = React.createClass({
+            edit: function () {
+                alert("Editing comment");
+            },
+            remove: function () {
+                alert("Removing comment");
+            },
+            render: function () {
+                return(
+                    <div className="commentContainer">
+                        <div className="comment">{this.props.children}</div>
+                        <button onClick={this.edit} className="button-primary">Edit</button>
+                        <button onClick={this.remove} className="button-danger">Remove</button>
+                    </div>
+                );
+            }
+        });
 
         ReactDOM.render(
-            <div>
-                
+            <div className="board">
+                <Comment>First Comment</Comment>
+                <Comment>Second Comment</Comment>
+                <Comment>Third Comment</Comment>
             </div>, 
             document.getElementById('container'));
     </script>
-
 </body>
 </html>
