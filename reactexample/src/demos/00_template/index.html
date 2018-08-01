@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>React - Template</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
     <script src="../../js/react.min.js"></script>
     <script src="../../js/react-dom.min.js"></script>
     <script src="../../js/browser.min.js"></script>
@@ -13,18 +14,13 @@
     <div id="container"></div>
 
     <script type="text/babel">
-        var Movie = React.createClass({
-            render: function () {
-                return (
-                    <div>
-                        <h2>{this.props.title}</h2>
-                        <h3>{this.props.genre}</h3>
-                    </div>
-                );
-            }
-        });
+        
 
-        ReactDOM.render(<Movie title="Avatar" genre="Animation" />, document.getElementById('container'));
+        ReactDOM.render(
+            <div>
+                
+            </div>, 
+            document.getElementById('container'));
     </script>
 
 </body>
