@@ -14,29 +14,48 @@
     <div id="container"></div>
 
     <script type="text/babel">
-        var Checkbox = React.createClass({
+        var Comment = React.createClass({
             getInitialState: function () {
-                return {checkbox: false};
+                return {editing: false};
             },
-            handleChecked: function () {
-                this.setState({checkbox: !this.state.checkbox});
+            edit: function () {
+                this.setState({editing: true});
             },
-            render: function () {
-                var msg;
-                if(this.state.checkbox) msg = "checked";
-                else msg = "unchecked";
+            remove: function () {
+                alert("Removing comment");
+            },
+            save: function () {
+                var val = this.refs.newText.value;
+                console.log(val);
+                this.setState({editing: false});
+            },
+            renderNormal: function () {
                 return(
-                    <div>
-                        <input type="checkbox" onChange={this.handleChecked} defaultChecked={this.state.checkbox}/>
-                        <h3>Checkbox is {msg}</h3>
+                    <div className="commentContainer">
+                        <div className="comment">{this.props.children}</div>
+                        <button onClick={this.edit} className="button-primary">Edit</button>
+                        <button onClick={this.remove} className="button-danger">Remove</button>
                     </div>
                 );
+            },
+            renderEditing: function () {
+                return(
+                    <div className="commentContainer">
+                        <textarea ref="newText" defaultValue={this.props.children}></textarea>
+                        <button onClick={this.save} className="button-success">Save</button>
+                    </div>
+                );
+            },
+            render: function () {
+                return this.state.editing ? this.renderEditing() : this.renderNormal();
             }
         });
 
         ReactDOM.render(
             <div className="board">
-                <Checkbox />
+                <Comment>First Comment</Comment>
+                <Comment>Second Comment</Comment>
+                <Comment>Third Comment</Comment>
             </div>, 
             document.getElementById('container'));
     </script>
