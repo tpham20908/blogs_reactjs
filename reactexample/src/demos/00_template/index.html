@@ -13,15 +13,18 @@
     <div id="container"></div>
 
     <script type="text/babel">
-        var Bacon = React.createClass({
+        var Movie = React.createClass({
             render: function () {
-                return(
-                    <h3>This is returned from Bacon!</h3>
+                return (
+                    <div>
+                        <h2>{this.props.title}</h2>
+                        <h3>{this.props.genre}</h3>
+                    </div>
                 );
             }
         });
 
-        ReactDOM.render(<Bacon />, document.getElementById('container'));
+        ReactDOM.render(<Movie title="Avatar" genre="Animation" />, document.getElementById('container'));
     </script>
 
 </body>
