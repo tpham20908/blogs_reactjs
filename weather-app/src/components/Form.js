@@ -17,9 +17,11 @@ class Form extends Component {
             if (city.capital !== "")
                 citiesArr.push(city.capital)
         });
-        const cities = citiesArr.sort().map(city => (
-            <option value={city}>{city}</option>
-        ));
+        const cities = citiesArr.sort().map(function(city, id) {
+            return (
+                <option key={id} value={city}>{city}</option>
+            )
+        });
         return (
             <div>
                 <form onSubmit={this.props.getWeather}>
