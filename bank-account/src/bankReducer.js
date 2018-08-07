@@ -1,5 +1,25 @@
-import constants from "constants.js";
+import constants from "./constants";
 
 const initialState = {
-    balance: 0
+	balance: 0
 }
+
+const bankReducer = (state, action) => {
+	console.log(action);    // temporarily logging all actions
+
+	switch (action.type) {
+		case constants.CREATE_ACCOUNT:
+			return initialState;
+
+		case DEPOSIT_INTO_ACCOUNT:
+			return { balance: state.balance + parseFloat(action.amount) }
+
+		case WITHDRAW_FROM_ACCOUNT:
+			return { balance: state.balance - parseFloat(action.amount) }
+
+		default:
+			return state;
+	}
+}
+
+export default bankReducer;
