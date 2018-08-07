@@ -11,10 +11,10 @@ const bankReducer = (state, action) => {
 		case constants.CREATE_ACCOUNT:
 			return initialState;
 
-		case DEPOSIT_INTO_ACCOUNT:
+		case constants.DEPOSIT_INTO_ACCOUNT:
 			return { balance: state.balance + parseFloat(action.amount) }
 
-		case WITHDRAW_FROM_ACCOUNT:
+		case constants.WITHDRAW_FROM_ACCOUNT:
 			return { balance: state.balance - parseFloat(action.amount) }
 
 		default:
