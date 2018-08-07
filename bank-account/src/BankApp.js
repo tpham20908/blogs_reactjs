@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import bankStore from "./bankStore";
 import constants from "./constants";
 
@@ -37,4 +38,4 @@ BankApp.propTypes = {
 	onWithdraw: PropTypes.func
 };
 
-// export default BankApp;
+export default BankApp;
