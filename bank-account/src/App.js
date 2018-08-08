@@ -5,13 +5,6 @@ import bankStore from "./bankStore";
 import constants from "./constants";
 
 class App extends Component {
-  constructor(...args) {
-    super(...args);
-    bankStore.dispatch({ type: constants.CREATE_ACCOUNT })
-    this.state = {
-      balance: bankStore.getState().balance
-    }
-  }
 
   componentDidMount() {
     this.unsubscribe = bankStore.subscribe(() =>
