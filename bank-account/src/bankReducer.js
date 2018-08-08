@@ -8,9 +8,6 @@ const bankReducer = (state, action) => {
 	console.log(action);    // temporarily logging all actions
 
 	switch (action.type) {
-		case constants.CREATE_ACCOUNT:
-			return initialState;
-
 		case constants.DEPOSIT_INTO_ACCOUNT:
 			return { balance: state.balance + parseFloat(action.amount) }
 
