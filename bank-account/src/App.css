@@ -1,28 +1,33 @@
-.App {
+body {
+  margin: 0;
+  font-family: "Myriad Pro", Arial, Helvetica, sans-serif;
+  background: #00703b;
+  color: #fff;
   text-align: center;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+header {
+  width: 100%;
+  padding: 15px;
+  background-color: #d8d8bf;
+  color: #00703b;
+  font-size: 30px;
 }
-
-.App-header {
-  background-color: #222;
-  height: 150px;
+h1{
+  font-size: 30px;
+}
+.atm {
+  width: 320px;
+  height: 115px;
+  border-radius: 10px;
+  background-color: #1D4F27;
+  margin: 10px auto 0 auto;
   padding: 20px;
-  color: white;
 }
-
-.App-title {
-  font-size: 1.5em;
+.atm input {
+  font-size:25px;
+  width: 290px
 }
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.atm button {
+  margin: 20px 10px;
+  padding: 20px 40px;
 }
