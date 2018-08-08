@@ -4,7 +4,7 @@ const initialState = {
 	balance: 0
 }
 
-const bankReducer = (state, action) => {
+const bankReducer = (state = initialState, action) => {
 	console.log(action);    // temporarily logging all actions
 
 	switch (action.type) {
