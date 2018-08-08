@@ -3,6 +3,7 @@ import './App.css';
 import BankApp from './BankApp';
 import bankStore from "./bankStore";
 import constants from "./constants";
+import bankActionCreators from "./bankActionCreators";
 
 class App extends Component {
 
@@ -22,9 +23,9 @@ class App extends Component {
         <BankApp
           balance={bankStore.getState().balance}
           onDeposit={(amount) => bankStore.dispatch(
-            { type: constants.DEPOSIT_INTO_ACCOUNT, amount: amount })}
+            bankActionCreators.depositIntoAccount(amount))}
           onWithdraw={(amount) => bankStore.dispatch(
-            { type: constants.WITHDRAW_FROM_ACCOUNT, amount: amount })}
+            bankActionCreators.withdrawFromAccount(amount))}
         />
       </div>
     );
