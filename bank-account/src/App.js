@@ -21,20 +21,6 @@ const mapDispatchToProps = (dispatch) => {
 const BankAppContainer = connect(mapStateToProps, mapDispatchToProps)(BankApp);
 
 class App extends Component {
-  /*
-  componentDidMount() {
-    this.unsubscribe = bankStore.subscribe(() =>
-      this.setState({ balance: bankStore.getState().balance })
-    );
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-  */
-
-  
-
   render() {
     return (
       <Provider store={bankStore}>

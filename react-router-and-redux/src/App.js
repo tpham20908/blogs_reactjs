@@ -17,12 +17,16 @@ const App = () => (
           <Link to="/about">About</Link>
         </li>
         <li>
+          <Link to="/something">Something else</Link>
+        </li>
+        <li>
           <Link to="/users">Users</Link>{" "}
         </li>
       </ul>
       <hr />
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
+      <Route path="/something" render={() => <h3>Something else</h3>}/>
       <Route path="/users" component={Users} />
     </div>
   </BrowserRouter>
