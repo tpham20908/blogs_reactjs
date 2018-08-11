@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import bankStore from "./bankStore";
-import constants from "./constants";
 
 class BankApp extends Component {
 	handleDeposit() {

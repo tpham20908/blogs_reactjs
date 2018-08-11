@@ -8,7 +8,7 @@ import PostForm from "./components/PostForm";
 class App extends Component {
   render() {
     return (
-      <Provider>
+      <Provider store={store}>
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
