@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Link, Redirect, Prompt } from "react-router-dom";
 
 const Home = () => <h2>Home</h2>;
 const About = (props) => {
@@ -72,6 +72,7 @@ const App = () => (
       {/* <Route path="/children" children={() => <h5>This is always rendered</h5>} /> */}
       <Route path="/info" component={Info} />
       <Route path="/error" component={Error} />
+      <Prompt message="Are you sure you want to leave?"/>
     </div>
   </BrowserRouter>
 );
