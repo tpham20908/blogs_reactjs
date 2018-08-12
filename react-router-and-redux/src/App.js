@@ -1,13 +1,21 @@
 import React from "react";
 import { render } from "react-dom";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 
 const Home = () => <h2>Home</h2>;
 const About = (props) => {
   console.log("match", props.match);
   return <h3>{props.match.params.info}</h3>
 };
-const Users = ({ match }) => <div>{match.url}</div>;
+const Users = ({ match }) => {
+  var validUsers = ["abc", "def"];
+  if (validUsers.includes(match.params.name)) 
+    return <h3>welcome {match.params.name}</h3>
+  else
+    return <Redirect to="/error" />
+}
+
+const Error = () => <h3>Error user</h3>
 
 const Info = (props) => {
   return (
@@ -47,10 +55,10 @@ const App = () => (
           <Link to="/something">Something else</Link>
         </li>
         <li>
-          <Link to="/users">Users</Link>
+          <Link to="/users/abc">User valid</Link>
         </li>
         <li>
-          <Link to="/children">Children link</Link>
+          <Link to="/users/dummy">User invalid</Link>
         </li>
         <li>
           <Link to="/info">Info</Link>
@@ -60,9 +68,10 @@ const App = () => (
       <Route exact path="/" component={Home} />
       <Route path="/about/:info" component={About} />
       <Route path="/something" render={() => <h3>Something else</h3>} />
-      <Route path="/users" component={Users} />
-      <Route path="/children" children={() => <h5>This is always rendered</h5>} />
+      <Route path="/users/:name" component={Users} />
+      {/* <Route path="/children" children={() => <h5>This is always rendered</h5>} /> */}
       <Route path="/info" component={Info} />
+      <Route path="/error" component={Error} />
     </div>
   </BrowserRouter>
 );
