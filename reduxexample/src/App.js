@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { Provider } from "react-redux";
 import logo from './logo.svg';
 import './App.css';
+import Posts from "./components/Posts";
+import PostForm from "./components/PostForm";
+import store from "./store";
 
 class App extends Component {
   render() {
@@ -11,7 +15,6 @@ class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Welcome to React</h1>
           </header>
-
           <PostForm />
           <hr />
           <Posts />

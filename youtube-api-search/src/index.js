@@ -17,7 +17,7 @@ class App extends Component {
 			selectedVideo: null
 		}
 
-		this.searchVideo("despacito");
+		this.searchVideo("titanic");
 	}
 
 	searchVideo = (term) => {
@@ -33,7 +33,7 @@ class App extends Component {
 		const searchVideo = _.debounce((term) => {this.searchVideo(term)}, 300);
 
 		return (
-			<div>
+			<div className="container">
 				<SearchBar onInputChange={searchVideo} />
 				<VideoDetail video={this.state.selectedVideo} />
 				<VideoList
