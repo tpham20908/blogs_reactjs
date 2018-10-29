@@ -3,6 +3,7 @@ import { shallow } from "enzyme";
 // import ReactDOM from "react-dom";
 import App from "../App";
 import CommentBox from "../CommentBox";
+import CommentList from "../CommentList";
 
 /*
 it ("shows a comment box", () => {
@@ -15,7 +16,20 @@ it ("shows a comment box", () => {
 })
 */
 
+let wrapped;
+
+beforeEach(() => {
+  wrapped = shallow(<App />);
+});
+
+afterEach(() => {
+  wrapped.unmount()
+})
+
 it ("shows a comment box", () => {
-  const wrapped = shallow(<App />);
   expect(wrapped.find(CommentBox).length).toEqual(1);
 });
+
+it ("shows a comment list", () => {
+  expect(wrapped.find(CommentList).length).toEqual(1);
+})

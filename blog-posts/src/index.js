@@ -9,6 +9,7 @@ import './index.css';
 import reducers from "./reducers";
 import PostsIndex from "./components/PostsIndex";
 import PostsNew from "./components/PostsNew";
+import PostShow from "./components/PostShow";
 
 const store = createStore(reducers, applyMiddleware(promise));
 
@@ -18,6 +19,7 @@ ReactDOM.render(
       <div className="container">
         <Switch>
           <Route path="/posts/new" component={PostsNew} />
+          <Route path="/posts/:id" component={PostShow} />
           <Route exact path="/" component={PostsIndex} />
         </Switch>
       </div>
