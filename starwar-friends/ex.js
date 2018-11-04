@@ -1,3 +1,6 @@
-let a = {"dsaf": "fdslj"};
-let c = {...a, "ad": "fasdlk"}
-console.log(c);
+let state = {};
+state = {...state, "http://swapi.sdlf.com": "Sooej dasie laoipide"};
+console.log(state);
+state = {...state, "http://swapi.sdlf.com/film1": "Sooej dasie laoipide sdaf"};
+console.log(state);
+console.log(state["http://swapi.sdlf.com"]);

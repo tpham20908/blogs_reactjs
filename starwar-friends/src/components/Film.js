@@ -16,14 +16,14 @@ class Film extends Component {
   }
 
   componentWillMount() {
-    const filmUrl = this.props.filmUrl;
     const films = this.props.films;
+    const filmUrl = this.props.filmUrl;
     // console.log(films);
     if (Object.keys(films).includes(filmUrl)) {
       this.setState({ name: films[filmUrl] });
     } else {
       this.props.fetchFilm(filmUrl);
-      
+    }
       /*
       fetch(filmUrl)
         .then(res => res.json())
@@ -33,7 +33,6 @@ class Film extends Component {
           });
         });
       */
-    }
   }
 
   render() {
@@ -44,7 +43,8 @@ class Film extends Component {
 }
 
 const mapStateToProps = state => {
-  return { films: state.films };
+  // console.log(state.films);
+  return { films: state.films }
 }
 
 export default connect(mapStateToProps, { fetchFilm })(Film);
