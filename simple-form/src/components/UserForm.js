@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
-// import {
-//   Button,
-//   Form,
-//   FormGroup,
-//   Label,
-//   Input,
-//   Col
-// } from 'reactstrap';
-// import { Link } from 'react-router-dom';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default class UserForm extends Component {
   state = {
     files: [],
-    options: '',
+    paymentType: '0',
     name: '',
     address: '',
     telnum: '',
     email: '',
+    touched: {
+      name: false,
+      address: false,
+      telnum: false,
+      email: false
+    }
   }
 
   handleChange = e => {
-    console.log(e);
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -37,11 +42,11 @@ export default class UserForm extends Component {
 
   render() {
     const renderUserInfoForm = () => (
-      <div>
-        <div className='form-group row'>
-          <label htmlFor='name' className="col-md-2 col-form-label">Name</label>
-          <div className="col-md-10">
-            <input
+      <React.Fragment>
+        <FormGroup row>
+          <Label htmlFor='name' md={3}>Name</Label>
+          <Col md={9}>
+            <Input
               type='text'
               id='name'
               name='name'
@@ -50,12 +55,12 @@ export default class UserForm extends Component {
               value={this.state.name}
               onChange={this.handleChange}
             />
-          </div>
-        </div>
-        <div className='form-group row'>
-          <label htmlFor='address' className="col-md-2 col-form-label">Address</label>
-          <div className="col-md-10">
-            <input
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label htmlFor='address' md={3}>Address</Label>
+          <Col md={9}>
+            <Input
               type='text'
               id='address'
               name='address'
@@ -64,13 +69,13 @@ export default class UserForm extends Component {
               value={this.state.address}
               onChange={this.handleChange}
             />
-          </div>
-        </div>
-        <div className='form-group row'>
-          <label htmlFor='telnum' className="col-md-2 col-form-label">Phone</label>
-          <div className="col-md-10">
-            <input
-              type='text'
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label htmlFor='telnum' md={3}>Phone</Label>
+          <Col md={9}>
+            <Input
+              type='tel'
               id='telnum'
               name='telnum'
               placeholder="Phone number"
@@ -78,12 +83,12 @@ export default class UserForm extends Component {
               value={this.state.telnum}
               onChange={this.handleChange}
             />
-          </div>
-        </div>
-        <div className='form-group row'>
-          <label htmlFor='email' className="col-md-2 col-form-label">Email</label>
-          <div className="col-md-10">
-            <input
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label htmlFor='email' md={3}>Email</Label>
+          <Col md={9}>
+            <Input
               type='email'
               id='email'
               name='email'
@@ -92,27 +97,29 @@ export default class UserForm extends Component {
               value={this.state.email}
               onChange={this.handleChange}
             />
-          </div>
-        </div>
-        <div className='form-group row'>
-          <div className='col-md-10 offset-md-2'>
-            <button type='submit' className='btn-primary'>Submit</button>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Col md={{ size: 9, offset: 3 }}>
+            {/* <Link to='/confirmation'> */}
+              <Button type='submit' color='primary'>Submit</Button>
+            {/* </Link> */}
+          </Col>
+        </FormGroup>
+      </React.Fragment>
     )
 
     return (
       <div className='row row-content'>
-        <div className='col-12 mb-5 text-center'>
+        <div className='col-8 offset-2 mb-4'>
           <h3>Submission form</h3>
         </div>
         <div className='col-8 offset-2'>
-          <form onSubmit={this.handleSubmit}>
-            <div className='form-group row'>
-              <label htmlFor='files' className="col-md-2 col-form-label">Files</label>
-              <div className="col-md-10">
-                <input
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup row>
+              <Label htmlFor='files' md={3}>Files upload</Label>
+              <Col md={9}>
+                <Input
                   type='file'
                   multiple
                   id='files'
@@ -120,33 +127,30 @@ export default class UserForm extends Component {
                   placeholder="Choose file"
                   onChange={this.handleSelectedFiles}
                 />
-              </div>
-            </div>
-            <div className='form-group row'>
-              <label htmlFor='options' className="col-md-2 col-form-label">Options</label>
-              <div className="col-md-10">
-                <select
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label htmlFor='paymentType' md={3}>Options</Label>
+              <Col md={9}>
+                <Input
                   type='select'
-                  id='options'
-                  name='options'
-                  placeholder="Options"
+                  id='paymentType'
+                  name='paymentType'
                   className='form-control'
                   value={this.state.options}
                   onChange={this.handleChange}>
-                  <option value='0'>Choose Option 2 to continue</option>
-                  <option value='1'>Option 1</option>
-                  <option value='2'>Option 2</option>
-                  <option value='3'>Option 3</option>
-                  <option value='4'>Option 4</option>
-                </select>
-              </div>
-            </div>
+                  <option value='0'>Choose Payment Type</option>
+                  <option value='cheque'>Cheque</option>
+                  <option value='visa'>Visa</option>
+                  <option value='master'>Master</option>
+                  <option value='paypal'>Paypal</option>
+                </Input>
+              </Col>
+            </FormGroup>
             {
-              this.state.options === '2' ? renderUserInfoForm() : null
+              this.state.paymentType !== '0' ? renderUserInfoForm() : null
             }
-
-
-          </form>
+          </Form>
         </div>
       </div>
     )
