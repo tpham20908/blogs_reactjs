@@ -38,9 +38,19 @@ export default class UserForm extends Component {
   }
 
   handleSelectedFiles = e => {
+    const now = new Date();
+    const dates = now.getDate() + '/' + now.getMonth() + 1 + "/" + now.getFullYear();
+    const times = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    const file = this.files.current.files[0];
+    const fileObj = {
+      dates,
+      times,
+      file
+    }
     this.setState({
-      files: [...this.state.files, ...this.files.current.files]
+      files: [ ...this.state.files, fileObj ]
     });
+    console.log(this.state.files);
   }
 
   handleSubmit(e) {
@@ -162,7 +172,7 @@ export default class UserForm extends Component {
 
     const renderSelectedFiles = files => (
       files.map((file, idx) => (
-        <div key={idx}>{file.name}</div>
+        <div key={idx}>{file.dates} {file.times} {file.file.name}</div>
       ))
     )
 
@@ -191,7 +201,7 @@ export default class UserForm extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor='paymentType' md={3}>Options</Label>
+              <Label htmlFor='paymentType' md={3}>Payment type</Label>
               <Col md={9}>
                 <Input
                   type='select'
