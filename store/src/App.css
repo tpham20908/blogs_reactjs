@@ -25,3 +25,24 @@ body {
 .text-bright {
   color: var(--lightBlue);
 }
+
+.btn-cart {
+  color: var(--lightBlue);
+  border: 0.05rem solid var(--lightBlue);
+  border-radius: 0.2rem;
+  background-color: transparent;
+  text-transform: capitalize;
+  font-size: 1.4rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: 0.2s all ease-in-out;
+}
+
+.btn-cart:hover {
+  background-color: var(--lightBlue);
+  color: var(--mainBlue);
+}
+
+.btn-cart:focus {
+  outline: none;
+}
