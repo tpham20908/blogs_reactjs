@@ -8,19 +8,13 @@ import {
   Col,
   FormFeedback
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-export default class UserForm extends Component {
+class UserForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      files: [],
-      paymentType: '0',
-      name: '',
-      address: '',
-      telnum: '',
-      email: '',
       touched: {
         name: false,
         address: false,
@@ -30,32 +24,11 @@ export default class UserForm extends Component {
     }
 
     this.files = React.createRef();
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  handleSelectedFiles = e => {
-    const now = new Date();
-    const dates = now.getDate() + '/' + now.getMonth() + 1 + "/" + now.getFullYear();
-    const times = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    const file = this.files.current.files[0];
-    const fileObj = {
-      dates,
-      times,
-      file
-    }
-    this.setState({
-      files: [ ...this.state.files, fileObj ]
-    });
-    console.log(this.state.files);
-  }
-
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
-    this.state.files.map(file => console.log(file.name));
+    this.props.history.push('/confirmation');
   }
 
   handleBlur = field => e => {
@@ -84,7 +57,17 @@ export default class UserForm extends Component {
   }
 
   render() {
-    const errors = this.validate(this.state.name, this.state.address, this.state.telnum, this.state.email);
+    const {
+      onChange,
+      handleSelectedFiles,
+      files,
+      paymentType,
+      name,
+      address,
+      telnum,
+      email
+    } = this.props;
+    const errors = this.validate(name, address, telnum, email);
 
     const renderUserInfoForm = () => (
       <React.Fragment>
@@ -92,13 +75,14 @@ export default class UserForm extends Component {
           <Label htmlFor='name' md={3}>Name*</Label>
           <Col md={9}>
             <Input
+              required
               type='text'
               id='name'
               name='name'
               placeholder="Name"
               className='form-control'
-              value={this.state.name}
-              onChange={this.handleChange}
+              value={name}
+              onChange={onChange}
               onBlur={this.handleBlur('name')}
               valid={errors.name === ''}
               invalid={errors.name !== ''}
@@ -110,13 +94,14 @@ export default class UserForm extends Component {
           <Label htmlFor='address' md={3}>Address*</Label>
           <Col md={9}>
             <Input
+              required
               type='text'
               id='address'
               name='address'
               placeholder="Address"
               className='form-control'
-              value={this.state.address}
-              onChange={this.handleChange}
+              value={address}
+              onChange={onChange}
               onBlur={this.handleBlur('address')}
               valid={errors.address === ''}
               invalid={errors.address !== ''}
@@ -128,13 +113,14 @@ export default class UserForm extends Component {
           <Label htmlFor='telnum' md={3}>Phone*</Label>
           <Col md={9}>
             <Input
+              required
               type='tel'
               id='telnum'
               name='telnum'
               placeholder="Ex: 555-555-5555"
               className='form-control'
-              value={this.state.telnum}
-              onChange={this.handleChange}
+              value={telnum}
+              onChange={onChange}
               onBlur={this.handleBlur('telnum')}
               valid={errors.telnum === ''}
               invalid={errors.telnum !== ''}
@@ -146,13 +132,14 @@ export default class UserForm extends Component {
           <Label htmlFor='email' md={3}>Email*</Label>
           <Col md={9}>
             <Input
+              required
               type='email'
               id='email'
               name='email'
               placeholder="Email"
               className='form-control'
-              value={this.state.email}
-              onChange={this.handleChange}
+              value={email}
+              onChange={onChange}
               onBlur={this.handleBlur('email')}
               valid={errors.email === ''}
               invalid={errors.email !== ''}
@@ -162,18 +149,26 @@ export default class UserForm extends Component {
         </FormGroup>
         <FormGroup row>
           <Col md={{ size: 9, offset: 3 }}>
-            {/* <Link to='/confirmation'> */}
             <Button type='submit' color='primary'>Submit</Button>
-            {/* </Link> */}
           </Col>
         </FormGroup>
       </React.Fragment>
     )
 
     const renderSelectedFiles = files => (
-      files.map((file, idx) => (
-        <div key={idx}>{file.dates} {file.times} {file.file.name}</div>
-      ))
+      <table style={{ width: '100%' }}>
+        <tbody>
+          {
+            files.map((file, idx) => (
+              <tr key={idx}>
+                <td>{file.dates}</td>
+                <td>{file.times}</td>
+                <td>{file.file.name}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     )
 
     return (
@@ -193,10 +188,10 @@ export default class UserForm extends Component {
                   name='files'
                   placeholder="Choose file"
                   ref={this.files}
-                  onChange={this.handleSelectedFiles}
+                  onChange={() => handleSelectedFiles(this.files)}
                 />
                 {
-                  this.state.files.length !== 0 ? renderSelectedFiles(this.state.files) : <div>No file selected</div>
+                  files.length !== 0 ? renderSelectedFiles(files) : <div>No file selected</div>
                 }
               </Col>
             </FormGroup>
@@ -208,8 +203,8 @@ export default class UserForm extends Component {
                   id='paymentType'
                   name='paymentType'
                   className='form-control'
-                  value={this.state.options}
-                  onChange={this.handleChange}>
+                  value={paymentType}
+                  onChange={onChange}>
                   <option value='0'>Choose Payment Type</option>
                   <option value='cheque'>Cheque</option>
                   <option value='visa'>Visa</option>
@@ -219,7 +214,7 @@ export default class UserForm extends Component {
               </Col>
             </FormGroup>
             {
-              this.state.paymentType !== '0' ? renderUserInfoForm() : null
+              paymentType !== '0' ? renderUserInfoForm() : null
             }
           </Form>
         </div>
@@ -227,3 +222,5 @@ export default class UserForm extends Component {
     )
   }
 }
+
+export default withRouter(UserForm);
