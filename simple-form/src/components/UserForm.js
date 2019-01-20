@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Col,
-  FormFeedback
+  Button, Form, FormGroup, Label, Input, Col, FormFeedback
 } from 'reactstrap';
 import formatTime from '../helpers/formatTime';
 
@@ -29,7 +23,7 @@ export default class UserForm extends Component {
       }
     }
 
-    this.files = React.createRef();
+    this.files = React.createRef(); // store selected file from file input
   }
 
   handleChange = e => {
@@ -69,14 +63,14 @@ export default class UserForm extends Component {
       telnum: '',
       email: ''
     }
-
+    const { name: touchedName, address: touchedAddress, telnum: touchedTelnum, email: touchedEmail } = this.state.touched;
     const telnumPattern = /^\d{3}-\d{3}-\d{4}$/;
     const emailPattern = /^[\w.%+-]+@[\w.-]+\.[\w]{2,4}$/;
 
-    if (this.state.touched.name && name.length === 0) errors.name = 'Name should not be empty';
-    if (this.state.touched.address && address.length === 0) errors.address = 'Address should not be empty';
-    if (this.state.touched.telnum && !telnumPattern.test(telnum)) errors.telnum = 'Format phone number 555-555-5555';
-    if (this.state.touched.email && !emailPattern.test(email)) errors.email = 'Invalid email address';
+    if (touchedName && name.length === 0) errors.name = 'Name should not be empty';
+    if (touchedAddress && address.length === 0) errors.address = 'Address should not be empty';
+    if (touchedTelnum && !telnumPattern.test(telnum)) errors.telnum = 'Format phone number 555-555-5555';
+    if (touchedEmail && !emailPattern.test(email)) errors.email = 'Invalid email address';
 
     return errors;
   }
@@ -84,9 +78,35 @@ export default class UserForm extends Component {
   render() {
     const errors = this.validate(this.state.name, this.state.address, this.state.telnum, this.state.email);
 
+    const renderFormGroup = (label, id, type) => (
+      <FormGroup row>
+        <Label htmlFor='name' md={3}>{label}*</Label>
+        <Col md={9}>
+          <Input
+            required
+            type={type}
+            id={id}
+            name={id}
+            placeholder={label}
+            className='form-control'
+            value={this.state[id]}
+            onChange={this.handleChange}
+            onBlur={this.handleBlur(id)}
+            valid={errors[id] === ''}
+            invalid={errors[id] !== ''}
+          />
+          <FormFeedback>{errors[id]}</FormFeedback>
+        </Col>
+      </FormGroup>
+    )
+
     const renderUserInfoForm = () => (
       <React.Fragment>
-        <FormGroup row>
+        { renderFormGroup('Name', 'name', 'text') }
+        { renderFormGroup('Address', 'address', 'text') }
+        { renderFormGroup('Phone', 'telnum', 'tel') }
+        { renderFormGroup('Email', 'email', 'email') }
+        {/* <FormGroup row>
           <Label htmlFor='name' md={3}>Name*</Label>
           <Col md={9}>
             <Input
@@ -162,6 +182,7 @@ export default class UserForm extends Component {
             <FormFeedback>{errors.email}</FormFeedback>
           </Col>
         </FormGroup>
+        */}
         <FormGroup row>
           <Col md={{ size: 9, offset: 3 }}>
             <Button type='submit' color='primary'>Submit</Button>
