@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import {
-  Button, Form, FormGroup, Label, Input, Col, FormFeedback
+  Button, Form, FormGroup, Label, Input, Col, FormFeedback,
+  Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import formatTime from '../helpers/formatTime';
 
-export default class UserForm extends Component {
+class UserForm extends Component {
   constructor(props) {
     super(props);
 
@@ -20,7 +22,8 @@ export default class UserForm extends Component {
         address: false,
         telnum: false,
         email: false
-      }
+      },
+      isModalOpen: false
     }
 
     this.files = React.createRef(); // store selected file from file input
@@ -47,7 +50,7 @@ export default class UserForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+    this.toggleModal();
   }
 
   handleBlur = field => e => {
@@ -75,12 +78,25 @@ export default class UserForm extends Component {
     return errors;
   }
 
+  toggleModal = () => this.setState({ isModalOpen: !this.state.isModalOpen });
+
+  confirm = () => {
+    this.toggleModal();
+    alert('Your order has been submitted!');
+    this.props.history.push('/');
+  }
+
   render() {
+    // errors returned from validating name, address, telnum, email from state
     const errors = this.validate(this.state.name, this.state.address, this.state.telnum, this.state.email);
 
+    // form can only be submitted if this condition is satisfied
+    const confirmable = Object.values(errors).filter(error => error !== '').length != 0;
+
+    // render each form group
     const renderFormGroup = (label, id, type) => (
       <FormGroup row>
-        <Label htmlFor='name' md={3}>{label}*</Label>
+        <Label htmlFor='name' md={3} className='text-right'>{label}*</Label>
         <Col md={9}>
           <Input
             required
@@ -100,97 +116,22 @@ export default class UserForm extends Component {
       </FormGroup>
     )
 
+    // render this form after a valid payment selected
     const renderUserInfoForm = () => (
       <React.Fragment>
-        { renderFormGroup('Name', 'name', 'text') }
-        { renderFormGroup('Address', 'address', 'text') }
-        { renderFormGroup('Phone', 'telnum', 'tel') }
-        { renderFormGroup('Email', 'email', 'email') }
-        {/* <FormGroup row>
-          <Label htmlFor='name' md={3}>Name*</Label>
-          <Col md={9}>
-            <Input
-              required
-              type='text'
-              id='name'
-              name='name'
-              placeholder="Name"
-              className='form-control'
-              value={this.state.name}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur('name')}
-              valid={errors.name === ''}
-              invalid={errors.name !== ''}
-            />
-            <FormFeedback>{errors.name}</FormFeedback>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label htmlFor='address' md={3}>Address*</Label>
-          <Col md={9}>
-            <Input
-              required
-              type='text'
-              id='address'
-              name='address'
-              placeholder="Address"
-              className='form-control'
-              value={this.state.address}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur('address')}
-              valid={errors.address === ''}
-              invalid={errors.address !== ''}
-            />
-            <FormFeedback>{errors.address}</FormFeedback>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label htmlFor='telnum' md={3}>Phone*</Label>
-          <Col md={9}>
-            <Input
-              required
-              type='tel'
-              id='telnum'
-              name='telnum'
-              placeholder="Ex: 555-555-5555"
-              className='form-control'
-              value={this.state.telnum}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur('telnum')}
-              valid={errors.telnum === ''}
-              invalid={errors.telnum !== ''}
-            />
-            <FormFeedback>{errors.telnum}</FormFeedback>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label htmlFor='email' md={3}>Email*</Label>
-          <Col md={9}>
-            <Input
-              required
-              type='email'
-              id='email'
-              name='email'
-              placeholder="Email"
-              className='form-control'
-              value={this.state.email}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur('email')}
-              valid={errors.email === ''}
-              invalid={errors.email !== ''}
-            />
-            <FormFeedback>{errors.email}</FormFeedback>
-          </Col>
-        </FormGroup>
-        */}
+        {renderFormGroup('Name', 'name', 'text')}
+        {renderFormGroup('Address', 'address', 'text')}
+        {renderFormGroup('Phone', 'telnum', 'tel')}
+        {renderFormGroup('Email', 'email', 'email')}
         <FormGroup row>
           <Col md={{ size: 9, offset: 3 }}>
-            <Button type='submit' color='primary'>Submit</Button>
+            <Button type='submit' disabled={confirmable} color='primary'>Submit</Button>
           </Col>
         </FormGroup>
       </React.Fragment>
     )
 
+    // render selected files below choose file input
     const renderSelectedFiles = files => (
       <table>
         <tbody>
@@ -198,7 +139,7 @@ export default class UserForm extends Component {
             files.map((file, idx) => (
               <tr key={idx}>
                 <td>{file.dates}</td>
-                <td>{file.times}</td>
+                <td className='px-1'>{file.times}</td>
                 <td>{file.file.name}</td>
               </tr>
             ))
@@ -210,12 +151,12 @@ export default class UserForm extends Component {
     return (
       <div className='row row-content'>
         <div className='col-8 offset-2 mb-4'>
-          <h3>Submission form</h3>
+          <h3>Order Information</h3>
         </div>
         <div className='col-8 offset-2'>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup row>
-              <Label htmlFor='files' md={3}>Files upload</Label>
+              <Label htmlFor='files' className='text-right' md={3}>Files upload</Label>
               <Col md={9}>
                 <input
                   type='file'
@@ -232,7 +173,7 @@ export default class UserForm extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor='paymentType' md={3}>Payment type</Label>
+              <Label htmlFor='paymentType' className='text-right' md={3}>Payment type</Label>
               <Col md={9}>
                 <Input
                   type='select'
@@ -254,7 +195,48 @@ export default class UserForm extends Component {
             }
           </Form>
         </div>
+
+        {/* Show Modal for user's confirmation */}
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Please confirm your information</ModalHeader>
+          <ModalBody>
+            <div className='row'>
+              <h6 className='col-12'>File(s) attached</h6>
+              <div className='col-11 offset-1'>
+                {
+                  renderSelectedFiles(this.state.files)
+                }
+              </div>
+            </div>
+            <div className='row mt-3'>
+              <h6 className='col-12'>Payment method</h6>
+              <div className='col-11 offset-1'>{this.state.paymentType}</div>
+            </div>
+            <div className='row mt-3'>
+              <h6 className='col-12'>Name</h6>
+              <div className='col-11 offset-1'>{this.state.name}</div>
+            </div>
+            <div className='row mt-3'>
+              <h6 className='col-12'>Address</h6>
+              <div className='col-11 offset-1'>{this.state.address}</div>
+            </div>
+            <div className='row mt-3'>
+              <h6 className='col-12'>Telephone number</h6>
+              <div className='col-11 offset-1'>{this.state.telnum}</div>
+            </div>
+            <div className='row my-3'>
+              <h6 className='col-12'>Email address</h6>
+              <div className='col-11 offset-1'>{this.state.email}</div>
+            </div><hr/>
+            <div className='row mt-3'>
+              <Button color="secondary" className='col-3 ml-3 mr-1' onClick={this.toggleModal}>Cancel</Button>
+              <Button color="success" className='col-3' onClick={this.confirm}>Confirm</Button>
+            </div>
+          </ModalBody>
+        </Modal>
       </div>
     )
   }
 }
+
+export default withRouter(UserForm);
