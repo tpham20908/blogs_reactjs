@@ -37,14 +37,18 @@ class UserForm extends Component {
     const now = new Date();
     const dates = `${formatTime(now.getDate())}/${formatTime(now.getMonth() + 1)}/${now.getFullYear()}`;
     const times = `${formatTime(now.getHours())}:${formatTime(now.getMinutes())}:${formatTime(now.getSeconds())}`;
-    const file = this.files.current.files[0];
-    const fileObj = {
-      dates,
-      times,
-      file
-    }
+    let newFiles = [];
+    Array.from(this.files.current.files).map(file => {
+      const fileObj = {
+        dates,
+        times,
+        file
+      }
+      newFiles.push(fileObj);
+      return true;
+    });
     this.setState({
-      files: [...this.state.files, fileObj]
+      files: [ ...newFiles, ...this.state.files ]
     });
   }
 
@@ -59,7 +63,7 @@ class UserForm extends Component {
     })
   }
 
-  validate = (name, address, telnum, email) => {
+  validate = (name, address, email, telnum) => {
     const errors = {
       name: '',
       address: '',
@@ -67,13 +71,13 @@ class UserForm extends Component {
       email: ''
     }
     const { name: touchedName, address: touchedAddress, telnum: touchedTelnum, email: touchedEmail } = this.state.touched;
-    const telnumPattern = /^\d{3}-\d{3}-\d{4}$/;
     const emailPattern = /^[\w.%+-]+@[\w.-]+\.[\w]{2,4}$/;
+    const telnumPattern = /^\d{3}-\d{3}-\d{4}$/;
 
     if (touchedName && name.length === 0) errors.name = 'Name should not be empty';
     if (touchedAddress && address.length === 0) errors.address = 'Address should not be empty';
-    if (touchedTelnum && !telnumPattern.test(telnum)) errors.telnum = 'Format phone number 555-555-5555';
     if (touchedEmail && !emailPattern.test(email)) errors.email = 'Invalid email address';
+    if (touchedTelnum && !telnumPattern.test(telnum)) errors.telnum = 'Format phone number 555-555-5555';
 
     return errors;
   }
@@ -82,16 +86,15 @@ class UserForm extends Component {
 
   confirm = () => {
     this.toggleModal();
-    alert('Your order has been submitted!');
-    this.props.history.push('/');
+    this.props.history.push('/confirmation');
   }
 
   render() {
     // errors returned from validating name, address, telnum, email from state
-    const errors = this.validate(this.state.name, this.state.address, this.state.telnum, this.state.email);
+    const errors = this.validate(this.state.name, this.state.address, this.state.email, this.state.telnum);
 
     // form can only be submitted if this condition is satisfied
-    const confirmable = Object.values(errors).filter(error => error !== '').length != 0;
+    const confirmable = Object.values(errors).filter(error => error !== '').length !== 0;
 
     // render each form group
     const renderFormGroup = (label, id, type) => (
@@ -119,10 +122,13 @@ class UserForm extends Component {
     // render this form after a valid payment selected
     const renderUserInfoForm = () => (
       <React.Fragment>
+        <Col md={{ size: 9, offset: 3 }} className='mb-2'>
+          <em>All fields below are required</em>
+        </Col>
         {renderFormGroup('Name', 'name', 'text')}
         {renderFormGroup('Address', 'address', 'text')}
-        {renderFormGroup('Phone', 'telnum', 'tel')}
         {renderFormGroup('Email', 'email', 'email')}
+        {renderFormGroup('Phone', 'telnum', 'tel')}
         <FormGroup row>
           <Col md={{ size: 9, offset: 3 }}>
             <Button type='submit' disabled={confirmable} color='primary'>Submit</Button>
@@ -227,7 +233,7 @@ class UserForm extends Component {
             <div className='row my-3'>
               <h6 className='col-12'>Email address</h6>
               <div className='col-11 offset-1'>{this.state.email}</div>
-            </div><hr/>
+            </div><hr />
             <div className='row mt-3'>
               <Button color="secondary" className='col-3 ml-3 mr-1' onClick={this.toggleModal}>Cancel</Button>
               <Button color="success" className='col-3' onClick={this.confirm}>Confirm</Button>
