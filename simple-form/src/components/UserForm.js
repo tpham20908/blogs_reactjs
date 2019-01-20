@@ -8,13 +8,19 @@ import {
   Col,
   FormFeedback
 } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
+import formatTime from '../helpers/formatTime';
 
-class UserForm extends Component {
+export default class UserForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      files: [],
+      paymentType: '0',
+      name: '',
+      address: '',
+      telnum: '',
+      email: '',
       touched: {
         name: false,
         address: false,
@@ -26,9 +32,28 @@ class UserForm extends Component {
     this.files = React.createRef();
   }
 
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleSelectedFiles = e => {
+    const now = new Date();
+    const dates = `${formatTime(now.getDate())}/${formatTime(now.getMonth() + 1)}/${now.getFullYear()}`;
+    const times = `${formatTime(now.getHours())}:${formatTime(now.getMinutes())}:${formatTime(now.getSeconds())}`;
+    const file = this.files.current.files[0];
+    const fileObj = {
+      dates,
+      times,
+      file
+    }
+    this.setState({
+      files: [...this.state.files, fileObj]
+    });
+  }
+
   handleSubmit = e => {
     e.preventDefault();
-    this.props.history.push('/confirmation');
+    console.log(this.state);
   }
 
   handleBlur = field => e => {
@@ -57,17 +82,7 @@ class UserForm extends Component {
   }
 
   render() {
-    const {
-      onChange,
-      handleSelectedFiles,
-      files,
-      paymentType,
-      name,
-      address,
-      telnum,
-      email
-    } = this.props;
-    const errors = this.validate(name, address, telnum, email);
+    const errors = this.validate(this.state.name, this.state.address, this.state.telnum, this.state.email);
 
     const renderUserInfoForm = () => (
       <React.Fragment>
@@ -81,8 +96,8 @@ class UserForm extends Component {
               name='name'
               placeholder="Name"
               className='form-control'
-              value={name}
-              onChange={onChange}
+              value={this.state.name}
+              onChange={this.handleChange}
               onBlur={this.handleBlur('name')}
               valid={errors.name === ''}
               invalid={errors.name !== ''}
@@ -100,8 +115,8 @@ class UserForm extends Component {
               name='address'
               placeholder="Address"
               className='form-control'
-              value={address}
-              onChange={onChange}
+              value={this.state.address}
+              onChange={this.handleChange}
               onBlur={this.handleBlur('address')}
               valid={errors.address === ''}
               invalid={errors.address !== ''}
@@ -119,8 +134,8 @@ class UserForm extends Component {
               name='telnum'
               placeholder="Ex: 555-555-5555"
               className='form-control'
-              value={telnum}
-              onChange={onChange}
+              value={this.state.telnum}
+              onChange={this.handleChange}
               onBlur={this.handleBlur('telnum')}
               valid={errors.telnum === ''}
               invalid={errors.telnum !== ''}
@@ -138,8 +153,8 @@ class UserForm extends Component {
               name='email'
               placeholder="Email"
               className='form-control'
-              value={email}
-              onChange={onChange}
+              value={this.state.email}
+              onChange={this.handleChange}
               onBlur={this.handleBlur('email')}
               valid={errors.email === ''}
               invalid={errors.email !== ''}
@@ -156,7 +171,7 @@ class UserForm extends Component {
     )
 
     const renderSelectedFiles = files => (
-      <table style={{ width: '100%' }}>
+      <table>
         <tbody>
           {
             files.map((file, idx) => (
@@ -188,10 +203,10 @@ class UserForm extends Component {
                   name='files'
                   placeholder="Choose file"
                   ref={this.files}
-                  onChange={() => handleSelectedFiles(this.files)}
+                  onChange={this.handleSelectedFiles}
                 />
                 {
-                  files.length !== 0 ? renderSelectedFiles(files) : <div>No file selected</div>
+                  this.state.files.length !== 0 ? renderSelectedFiles(this.state.files) : <div>No file selected</div>
                 }
               </Col>
             </FormGroup>
@@ -203,8 +218,8 @@ class UserForm extends Component {
                   id='paymentType'
                   name='paymentType'
                   className='form-control'
-                  value={paymentType}
-                  onChange={onChange}>
+                  value={this.state.options}
+                  onChange={this.handleChange}>
                   <option value='0'>Choose Payment Type</option>
                   <option value='cheque'>Cheque</option>
                   <option value='visa'>Visa</option>
@@ -214,7 +229,7 @@ class UserForm extends Component {
               </Col>
             </FormGroup>
             {
-              paymentType !== '0' ? renderUserInfoForm() : null
+              this.state.paymentType !== '0' ? renderUserInfoForm() : null
             }
           </Form>
         </div>
@@ -222,5 +237,3 @@ class UserForm extends Component {
     )
   }
 }
-
-export default withRouter(UserForm);
