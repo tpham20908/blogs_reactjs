@@ -87,6 +87,8 @@ class UserForm extends Component {
   confirm = () => {
     this.toggleModal();
     this.props.history.push('/confirmation');
+    // prod
+    // this.props.history.push('/simple-form/confirmation');
   }
 
   render() {
@@ -99,8 +101,8 @@ class UserForm extends Component {
     // render each form group
     const renderFormGroup = (label, id, type) => (
       <FormGroup row>
-        <Label htmlFor='name' md={3} className='text-right'>{label}*</Label>
-        <Col md={9}>
+        <Label htmlFor='name' className='col-12 col-md-3 text-right'>{label}*</Label>
+        <Col className='col-12 col-md-9'>
           <Input
             required
             type={type}
@@ -122,7 +124,7 @@ class UserForm extends Component {
     // render this form after a valid payment selected
     const renderUserInfoForm = () => (
       <React.Fragment>
-        <Col md={{ size: 9, offset: 3 }} className='mb-2'>
+        <Col className='col-12 col-md-9 offset-md-3 mb-2'>
           <em>All fields below are required</em>
         </Col>
         {renderFormGroup('Name', 'name', 'text')}
@@ -130,7 +132,7 @@ class UserForm extends Component {
         {renderFormGroup('Email', 'email', 'email')}
         {renderFormGroup('Phone', 'telnum', 'tel')}
         <FormGroup row>
-          <Col md={{ size: 9, offset: 3 }}>
+          <Col className='col-12 col-md-9 offset-md-3'>
             <Button type='submit' disabled={confirmable} color='primary'>Submit</Button>
           </Col>
         </FormGroup>
@@ -162,8 +164,8 @@ class UserForm extends Component {
         <div className='col-8 offset-2'>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup row>
-              <Label htmlFor='files' className='text-right' md={3}>Files upload</Label>
-              <Col md={9}>
+              <Label className='col-12 col-md-3 text-right'>Files upload</Label>
+              <Col className='col-12 col-md-9'>
                 <input
                   type='file'
                   multiple
@@ -179,8 +181,8 @@ class UserForm extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label htmlFor='paymentType' className='text-right' md={3}>Payment type</Label>
-              <Col md={9}>
+              <Label htmlFor='paymentType' className='col-12 col-md-3 text-right'>Payment type</Label>
+              <Col className='col-12 col-md-9'>
                 <Input
                   type='select'
                   id='paymentType'

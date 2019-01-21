@@ -14,6 +14,13 @@ class App extends Component {
           <Route path='/confirmation' component={ Confirmation } />
           <Route component={Default} />
         </Switch>
+
+        {/* prod */}
+        {/* <Switch>
+          <Route exact path='/simple-form/' component={ UserForm } />
+          <Route path='/simple-form/confirmation' component={ Confirmation } />
+          <Route component={Default} />
+        </Switch> */}
       </div>
     );
   }
