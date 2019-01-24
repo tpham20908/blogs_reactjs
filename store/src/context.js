@@ -27,8 +27,16 @@ class ProductProvider extends Component {
     });
   }
 
-  handleDetail = () => {
-    console.log('hello from handleDetail');
+  getItem = id => {
+    const product = this.state.products.find(item => item.id === id);
+    return product;
+  }
+
+  handleDetail = id => {
+    const product = this.getItem(id);
+    this.setState(() => {
+      return { detailProduct: product }
+    })
   }
 
   addToCart = id => {
@@ -39,7 +47,7 @@ class ProductProvider extends Component {
     const valueObj = {
       ...this.state,
       handleDetail: this.handleDetail,
-      addToCart: this.addToCart
+      addToCart: this.addToCart,
     }
 
     return (
