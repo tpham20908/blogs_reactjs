@@ -8,7 +8,7 @@ export default class ProductList extends Component {
     return (
       <React.Fragment>
         <div className='container py-5'>
-          <Title name='our' title='product' />
+          <Title name='our' title='products' />
           <div className='row'>
             <ProductConsumer>
               { value => value.products.map(product => <Product key={product.id} product={ product }/>) }
