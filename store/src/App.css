@@ -26,6 +26,24 @@ body {
   color: var(--lightBlue);
 }
 
+.btn-black {
+  background: transparent;
+  color: var(--mainDark);
+  border: 0.01rem solid var(--mainDark);
+  border-radius: 0
+}
+
+.btn-black:hover {
+  background-color: var(--mainDark);
+  color: var(--mainWhite);
+}
+
+.cart-icon {
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: var(--mainYellow);
+}
+
 /* .btn-cart {
   color: var(--lightBlue);
   border: 0.05rem solid var(--lightBlue);
