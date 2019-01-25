@@ -27,7 +27,7 @@ export default class Product extends Component {
                       value.openModal(id)
                     }}>
                     {inCart ?
-                      (<p className='text-capitalize mb-0' disabled>in cart</p>) :
+                      (<p className='text-capitalize mb-0'>in cart</p>) :
                       (<i className='fas fa-cart-plus' />)}
                   </button>
                 </div>
