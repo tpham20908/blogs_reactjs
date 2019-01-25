@@ -21,18 +21,21 @@ export default function CartItem({ item, value }) {
               className='btn btn-black mx-1'
               onClick={() => decrement(id)}
             >-</span>
-            {count}
+            <span className='btn btn-black mx-1'>{count}</span>
             <span
               className='btn btn-black mx-1'
               onClick={() => increment(id)}
             >+</span>
           </div>
         </div>
-
       </div>
       <div className='col-10 mx-auto col-lg-2'>
+        <div className='cart-icon d-inline' onClick={() => removeItem(id)}>
+          <i className='fas fa-trash'></i>
+        </div>
       </div>
       <div className='col-10 mx-auto col-lg-2'>
+        <strong>item total: <span className='text-blue'>${total}</span></strong>
       </div>
     </div>
   )
